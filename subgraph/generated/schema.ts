@@ -8,10 +8,10 @@ import {
   store,
   Bytes,
   BigInt,
-  BigDecimal
+  BigDecimal,
 } from "@graphprotocol/graph-ts";
 
-export class Gravatar extends Entity {
+export class MarketOrder extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -19,23 +19,33 @@ export class Gravatar extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Gravatar entity without an ID");
+    assert(id != null, "Cannot save MarketOrder entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Gravatar must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type MarketOrder must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("Gravatar", id.toString(), this);
+      store.set("MarketOrder", id.toString(), this);
     }
   }
 
-  static load(id: string): Gravatar | null {
-    return changetype<Gravatar | null>(store.get("Gravatar", id));
+  static loadInBlock(id: string): MarketOrder | null {
+    return changetype<MarketOrder | null>(
+      store.get_in_block("MarketOrder", id),
+    );
+  }
+
+  static load(id: string): MarketOrder | null {
+    return changetype<MarketOrder | null>(store.get("MarketOrder", id));
   }
 
   get id(): string {
     let value = this.get("id");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
   }
 
   set id(value: string) {
@@ -44,28 +54,79 @@ export class Gravatar extends Entity {
 
   get owner(): Bytes {
     let value = this.get("owner");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
   set owner(value: Bytes) {
     this.set("owner", Value.fromBytes(value));
   }
 
-  get displayName(): string {
-    let value = this.get("displayName");
-    return value!.toString();
+  get price(): BigInt {
+    let value = this.get("price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set displayName(value: string) {
-    this.set("displayName", Value.fromString(value));
+  set price(value: BigInt) {
+    this.set("price", Value.fromBigInt(value));
   }
 
-  get imageUrl(): string {
-    let value = this.get("imageUrl");
-    return value!.toString();
+  get ticker(): Bytes {
+    let value = this.get("ticker");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set imageUrl(value: string) {
-    this.set("imageUrl", Value.fromString(value));
+  set ticker(value: Bytes) {
+    this.set("ticker", Value.fromBytes(value));
+  }
+
+  get inscription(): Bytes {
+    let value = this.get("inscription");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set inscription(value: Bytes) {
+    this.set("inscription", Value.fromBytes(value));
+  }
+
+  get active(): string {
+    let value = this.get("active");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set active(value: string) {
+    this.set("active", Value.fromString(value));
+  }
+
+  get buyer(): Bytes {
+    let value = this.get("buyer");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set buyer(value: Bytes) {
+    this.set("buyer", Value.fromBytes(value));
   }
 }

@@ -1,6 +1,9 @@
-type Gravatar @entity {
+type MarketOrder @entity {
   id: ID!
   owner: Bytes!
-  displayName: String!
-  imageUrl: String!
+  price: BigInt!
+  ticker: Bytes!
+  inscription: Bytes!
+  active: String!
+  buyer: Bytes!
 }

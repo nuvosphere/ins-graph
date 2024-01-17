@@ -4,22 +4,27 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: GravatarRegistry
+    name: Metis
+    network: andromeda
     source:
-      abi: GravatarRegistry
+      address: "0xA5264af3C587962863EBde952D683Eee10231638"
+      abi: Nip20Market
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - NewGravatar
-        - UpdatedGravatar
+        - OrderCreated
+        - OrderRemoved
+        - OrderExecuted
       abis:
-        - name: GravatarRegistry
-          file: ./abis/GravatarRegistry.json
+        - name: Nip20Market
+          file: ./abis/Nip20Market.json
       eventHandlers:
-        - event: NewGravatar(uint256,address,string,string)
-          handler: handleNewGravatar
-        - event: UpdatedGravatar(uint256,address,string,string)
-          handler: handleUpdatedGravatar
-      file: ./src/gravatar-registry.ts
+        - event: OrderCreated(indexed uint256,indexed address,uint256,bytes32,bytes32)
+          handler: handleNewOrder
+        - event: OrderRemoved(indexed uint256)
+          handler: handleRemoveOrder
+        - event: OrderExecuted(indexed uint256,indexed address)
+          handler: handleExecuteOrder
+      file: ./src/Nip20Market.ts

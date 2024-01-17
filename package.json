@@ -14,5 +14,8 @@
     "type": "git",
     "url": "git@github.com:ericlee42/metis-subgraph-example.git"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.64.1"
+  }
 }
