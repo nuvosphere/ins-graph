@@ -130,3 +130,71 @@ export class MarketOrder extends Entity {
     this.set("buyer", Value.fromBytes(value));
   }
 }
+
+export class UserConsumeSum extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UserConsumeSum entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UserConsumeSum must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("UserConsumeSum", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): UserConsumeSum | null {
+    return changetype<UserConsumeSum | null>(
+      store.get_in_block("UserConsumeSum", id),
+    );
+  }
+
+  static load(id: string): UserConsumeSum | null {
+    return changetype<UserConsumeSum | null>(store.get("UserConsumeSum", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get income(): BigInt {
+    let value = this.get("income");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set income(value: BigInt) {
+    this.set("income", Value.fromBigInt(value));
+  }
+
+  get expense(): BigInt {
+    let value = this.get("expense");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set expense(value: BigInt) {
+    this.set("expense", Value.fromBigInt(value));
+  }
+}

@@ -7,3 +7,9 @@ type MarketOrder @entity {
   active: String!
   buyer: Bytes!
 }
+
+type UserConsumeSum @entity {
+  id: ID!
+  income: BigInt!
+  expense: BigInt!
+}
