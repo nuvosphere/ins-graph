@@ -13,7 +13,7 @@ export function handleNewOrder(event: OrderCreated): void {
   order.ticker = event.params.ticker;
   order.inscription = event.params.txhash;
   order.active = "true";
-  order.buyer = event.params.seller;
+  order.list = event.block.number;
   order.save();
 }
 
@@ -24,6 +24,7 @@ export function handleRemoveOrder(event: OrderRemoved): void {
     order = new MarketOrder(event.params.orderId.toHex());
   }
   order.active = "false";
+  order.remove = event.block.number;
   order.save();
 }
 
@@ -36,5 +37,6 @@ export function handleExecuteOrder(event: OrderExecuted): void {
   }
   order.buyer = event.params.buyer;
   order.active = "false";
+  order.execute = event.block.number;
   order.save();
 }

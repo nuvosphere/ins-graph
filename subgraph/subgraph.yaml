@@ -7,8 +7,9 @@ dataSources:
     name: Metis
     network: andromeda
     source:
-      address: "0xA5264af3C587962863EBde952D683Eee10231638"
+      address: "0x055b3E3D48736B17C3125d2e5aAEC5868f7a3D4D"
       abi: Nip20Market
+      startBlock: 10097263
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

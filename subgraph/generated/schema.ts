@@ -117,16 +117,67 @@ export class MarketOrder extends Entity {
     this.set("active", Value.fromString(value));
   }
 
-  get buyer(): Bytes {
+  get buyer(): Bytes | null {
     let value = this.get("buyer");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set buyer(value: Bytes) {
-    this.set("buyer", Value.fromBytes(value));
+  set buyer(value: Bytes | null) {
+    if (!value) {
+      this.unset("buyer");
+    } else {
+      this.set("buyer", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get list(): BigInt {
+    let value = this.get("list");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set list(value: BigInt) {
+    this.set("list", Value.fromBigInt(value));
+  }
+
+  get remove(): BigInt | null {
+    let value = this.get("remove");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set remove(value: BigInt | null) {
+    if (!value) {
+      this.unset("remove");
+    } else {
+      this.set("remove", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get execute(): BigInt | null {
+    let value = this.get("execute");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set execute(value: BigInt | null) {
+    if (!value) {
+      this.unset("execute");
+    } else {
+      this.set("execute", Value.fromBigInt(<BigInt>value));
+    }
   }
 }
