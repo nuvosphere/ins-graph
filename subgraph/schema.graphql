@@ -5,7 +5,11 @@ type MarketOrder @entity {
   ticker: Bytes!
   inscription: Bytes!
   active: String!
-  buyer: Bytes!
+  buyer: Bytes
+  list: BigInt!
+  remove: BigInt
+  execute: BigInt
+  created: BigInt!
 }
 
 type UserConsumeSum @entity {
@@ -13,3 +17,11 @@ type UserConsumeSum @entity {
   income: BigInt!
   expense: BigInt!
 }
+
+type MarketSummary @entity {
+  id: ID!
+  totalAmount: BigInt!
+  transCount:BigInt!
+  avgPrice:BigInt!
+}
+
