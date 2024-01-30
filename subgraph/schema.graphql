@@ -2,7 +2,7 @@ type MarketOrder @entity {
   id: ID!
   owner: Bytes!
   price: BigInt!
-  ticker: Bytes!
+  ticker: String!
   inscription: Bytes!
   active: String!
   buyer: Bytes
@@ -10,6 +10,18 @@ type MarketOrder @entity {
   remove: BigInt
   execute: BigInt
   created: BigInt!
+  executeTime:BigInt
+}
+
+type Nuscriptions @entity {
+  id:ID!
+  inscription:Bytes!
+  online_count:BigInt!
+  success_count:BigInt!
+  max_price:BigInt!
+  min_price:BigInt!
+  avg_price:BigInt!
+  total_amount:BigInt!
 }
 
 type UserConsumeSum @entity {

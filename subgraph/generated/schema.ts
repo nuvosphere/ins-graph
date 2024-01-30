@@ -78,17 +78,17 @@ export class MarketOrder extends Entity {
     this.set("price", Value.fromBigInt(value));
   }
 
-  get ticker(): Bytes {
+  get ticker(): string {
     let value = this.get("ticker");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set ticker(value: Bytes) {
-    this.set("ticker", Value.fromBytes(value));
+  set ticker(value: string) {
+    this.set("ticker", Value.fromString(value));
   }
 
   get inscription(): Bytes {
@@ -192,6 +192,156 @@ export class MarketOrder extends Entity {
 
   set created(value: BigInt) {
     this.set("created", Value.fromBigInt(value));
+  }
+
+  get executeTime(): BigInt | null {
+    let value = this.get("executeTime");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set executeTime(value: BigInt | null) {
+    if (!value) {
+      this.unset("executeTime");
+    } else {
+      this.set("executeTime", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class Nuscriptions extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Nuscriptions entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Nuscriptions must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("Nuscriptions", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): Nuscriptions | null {
+    return changetype<Nuscriptions | null>(
+      store.get_in_block("Nuscriptions", id),
+    );
+  }
+
+  static load(id: string): Nuscriptions | null {
+    return changetype<Nuscriptions | null>(store.get("Nuscriptions", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get inscription(): Bytes {
+    let value = this.get("inscription");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set inscription(value: Bytes) {
+    this.set("inscription", Value.fromBytes(value));
+  }
+
+  get online_count(): BigInt {
+    let value = this.get("online_count");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set online_count(value: BigInt) {
+    this.set("online_count", Value.fromBigInt(value));
+  }
+
+  get success_count(): BigInt {
+    let value = this.get("success_count");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set success_count(value: BigInt) {
+    this.set("success_count", Value.fromBigInt(value));
+  }
+
+  get max_price(): BigInt {
+    let value = this.get("max_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set max_price(value: BigInt) {
+    this.set("max_price", Value.fromBigInt(value));
+  }
+
+  get min_price(): BigInt {
+    let value = this.get("min_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set min_price(value: BigInt) {
+    this.set("min_price", Value.fromBigInt(value));
+  }
+
+  get avg_price(): BigInt {
+    let value = this.get("avg_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set avg_price(value: BigInt) {
+    this.set("avg_price", Value.fromBigInt(value));
+  }
+
+  get total_amount(): BigInt {
+    let value = this.get("total_amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set total_amount(value: BigInt) {
+    this.set("total_amount", Value.fromBigInt(value));
   }
 }
 
