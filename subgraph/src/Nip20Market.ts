@@ -31,13 +31,14 @@ export function handleNewOrder(event: OrderCreated): void {
     nuscription.total_amount = BigInt.fromI32(0);
     nuscription.max_price = BigInt.fromI32(0);
     nuscription.min_price = BigInt.fromI32(0);
+    nuscription.avg_price = BigInt.fromI32(0);
 
   }
   nuscription.save()
 }
 
 export function handleRemoveOrder(event: OrderRemoved): void {
-  let order = new MarketOrder(event.params.orderId.toHex());
+  let order =  MarketOrder.load(event.params.orderId.toHex());
   //uint256 indexed orderId, address indexed seller, uint256 price, bytes32 ticker, bytes32 txhash
   if (!order) {
     order = new MarketOrder(event.params.orderId.toHex());
@@ -48,7 +49,6 @@ export function handleRemoveOrder(event: OrderRemoved): void {
 
   let nuscription = Nuscriptions.load(order.ticker)
   if(nuscription){
-    nuscription.inscription = order.inscription;
     nuscription.online_count = nuscription.online_count.minus( BigInt.fromI32(1));
     nuscription.save()
   }
