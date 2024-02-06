@@ -3,6 +3,7 @@ type MarketOrder @entity {
   owner: Bytes!
   price: BigInt!
   ticker: String!
+  ticker_name: String!
   inscription: Bytes!
   active: String!
   buyer: Bytes
@@ -13,7 +14,7 @@ type MarketOrder @entity {
   executeTime:BigInt
 }
 
-type Nuscriptions @entity {
+type Nuscription @entity {
   id:ID!
   inscription:Bytes!
   online_count:BigInt!

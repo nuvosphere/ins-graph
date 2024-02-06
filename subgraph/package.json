@@ -13,7 +13,7 @@
     "deploy:goerli": "graph deploy --version-label v0.0.1 --network metis-goerli --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs ericlee42/gravatar-registry-goerli",
     "create:andromeda": "graph create --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
     "remove:andromeda": "graph remove --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
-    "deploy:andromeda": "graph deploy --version-label v0.0.1 --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market",
+    "deploy:andromeda": "graph deploy  --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market",
     "deploy:andromeda:test": "graph deploy --version-label v0.0.1 --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market-test"
 
   },

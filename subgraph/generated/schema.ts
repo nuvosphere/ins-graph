@@ -91,6 +91,19 @@ export class MarketOrder extends Entity {
     this.set("ticker", Value.fromString(value));
   }
 
+  get ticker_name(): string {
+    let value = this.get("ticker_name");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set ticker_name(value: string) {
+    this.set("ticker_name", Value.fromString(value));
+  }
+
   get inscription(): Bytes {
     let value = this.get("inscription");
     if (!value || value.kind == ValueKind.NULL) {
@@ -212,7 +225,7 @@ export class MarketOrder extends Entity {
   }
 }
 
-export class Nuscriptions extends Entity {
+export class Nuscription extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -220,24 +233,24 @@ export class Nuscriptions extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Nuscriptions entity without an ID");
+    assert(id != null, "Cannot save Nuscription entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Nuscriptions must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        `Entities of type Nuscription must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("Nuscriptions", id.toString(), this);
+      store.set("Nuscription", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: string): Nuscriptions | null {
-    return changetype<Nuscriptions | null>(
-      store.get_in_block("Nuscriptions", id),
+  static loadInBlock(id: string): Nuscription | null {
+    return changetype<Nuscription | null>(
+      store.get_in_block("Nuscription", id),
     );
   }
 
-  static load(id: string): Nuscriptions | null {
-    return changetype<Nuscriptions | null>(store.get("Nuscriptions", id));
+  static load(id: string): Nuscription | null {
+    return changetype<Nuscription | null>(store.get("Nuscription", id));
   }
 
   get id(): string {

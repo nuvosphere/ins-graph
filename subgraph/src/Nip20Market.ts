@@ -4,7 +4,7 @@ import {
   OrderRemoved,
   OrderExecuted
 } from "../generated/Nip20Market/Nip20Market";
-import { MarketOrder,UserConsumeSum,MarketSummary ,Nuscriptions} from "../generated/schema";
+import { MarketOrder,UserConsumeSum,MarketSummary ,Nuscription} from "../generated/schema";
 
 export function handleNewOrder(event: OrderCreated): void {
   let order = new MarketOrder(event.params.orderId.toHex());
@@ -12,19 +12,20 @@ export function handleNewOrder(event: OrderCreated): void {
   order.owner = event.params.seller;
   order.price = event.params.price;
   order.ticker = event.params.ticker.toHexString();
+  order.ticker_name = event.params.ticker.toString();
   order.inscription = event.params.txhash;
   order.active = "true";
   order.list = event.block.number;
   order.created = event.block.timestamp;
   order.save();
 
-  let nuscription = Nuscriptions.load(order.ticker)
+  let nuscription = Nuscription.load(order.ticker_name)
   if(nuscription){
     nuscription.inscription = order.inscription;
     nuscription.online_count = nuscription.online_count.plus( BigInt.fromI32(1));
   }
   else{
-    nuscription = new Nuscriptions(order.ticker);
+    nuscription = new Nuscription(order.ticker_name);
     nuscription.inscription = order.inscription;
     nuscription.success_count = BigInt.fromI32(0);
     nuscription.online_count = BigInt.fromI32(1);
@@ -47,7 +48,7 @@ export function handleRemoveOrder(event: OrderRemoved): void {
   order.remove = event.block.number;
   order.save();
 
-  let nuscription = Nuscriptions.load(order.ticker)
+  let nuscription = Nuscription.load(order.ticker_name)
   if(nuscription){
     nuscription.online_count = nuscription.online_count.minus( BigInt.fromI32(1));
     nuscription.save()
@@ -106,7 +107,7 @@ export function handleExecuteOrder(event: OrderExecuted): void {
   marketSum.save();
 
   //ticker
-  let nuscription = Nuscriptions.load(order.ticker)
+  let nuscription = Nuscription.load(order.ticker_name)
   if(nuscription){
     nuscription.inscription = order.inscription;
     nuscription.online_count = nuscription.online_count.minus( BigInt.fromI32(1));
@@ -122,7 +123,7 @@ export function handleExecuteOrder(event: OrderExecuted): void {
     }
   }
   else{
-    nuscription = new Nuscriptions(order.ticker);
+    nuscription = new Nuscription(order.ticker_name);
     nuscription.inscription = order.inscription;
     nuscription.success_count = BigInt.fromI32(0);
     nuscription.online_count = BigInt.fromI32(1);
