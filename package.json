@@ -16,6 +16,6 @@
   },
   "keywords": [],
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.64.1"
+    "@graphprotocol/graph-cli": "^0.67.4"
   }
 }
