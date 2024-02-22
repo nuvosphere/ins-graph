@@ -25,6 +25,18 @@ type Nuscription @entity {
   total_amount:BigInt!
 }
 
+type Nuscription24 @entity {
+  id:ID!
+  inscription:Bytes!
+  online_count:BigInt!
+  success_count:BigInt!
+  max_price:BigInt!
+  min_price:BigInt!
+  avg_price:BigInt!
+  total_amount:BigInt!
+  prices:[BigInt!]!
+}
+
 type UserConsumeSum @entity {
   id: ID!
   income: BigInt!
@@ -34,7 +46,9 @@ type UserConsumeSum @entity {
 type MarketSummary @entity {
   id: ID!
   totalAmount: BigInt!
+  
   transCount:BigInt!
+  totalOrders:BigInt!
   avgPrice:BigInt!
 }
 

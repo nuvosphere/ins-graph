@@ -14,10 +14,10 @@
     "create:andromeda": "graph create --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
     "remove:andromeda": "graph remove --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
     "deploy:andromeda": "graph deploy  --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market",
-    "deploy:andromeda:test": "graph deploy --version-label v0.0.1 --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market-test"
-
+    "deploy:andromeda:test": "graph deploy --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market-test"
   },
   "dependencies": {
+    "@graphprotocol/graph-cli": "^0.68.0",
     "@graphprotocol/graph-ts": "^0.32.0"
   },
   "devDependencies": {
