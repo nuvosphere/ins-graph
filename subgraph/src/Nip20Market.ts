@@ -1,11 +1,12 @@
-import { BigInt,Bytes,log } from "@graphprotocol/graph-ts";
+import { Address, BigInt,Bytes,log } from "@graphprotocol/graph-ts";
+// import {Date}  from "assemblyscript/std/assembly/date";
 import {
   OrderCreated,
   OrderRemoved,
   OrderExecuted
 } from "../generated/Nip20Market/Nip20Market";
 import { MarketOrder,UserConsumeSum,MarketSummary ,Nuscription,Nuscription24} from "../generated/schema";
-
+import {NipMarketManager} from "../generated/GravatarRegistry/NipMarketManager"
 const multi_factor = BigInt.fromI32(3);
 
 export function handleNewOrder(event: OrderCreated): void {
@@ -39,7 +40,7 @@ export function handleNewOrder(event: OrderCreated): void {
   }
   nuscription.save();
   calcTotalTicker(true);
-  countNuscription24(order.ticker,order.inscription,order.price,event.block.timestamp,false);
+  countNuscription24(order.ticker,order.inscription,order.price,event.block.timestamp,true);
 
 }
 
@@ -102,8 +103,8 @@ export function handleExecuteOrder(event: OrderExecuted): void {
 
   let marketSum = MarketSummary.load("nip20");
   if(marketSum){
-    marketSum.totalAmount = marketSum.totalAmount.plus(amount).times(multi_factor);
-    
+    marketSum.totalAmount = marketSum.totalAmount.plus(amount);//.times(multi_factor);
+    // marketSum.totalAmount = marketSum.totalAmount.times(multi_factor);
     marketSum.transCount = marketSum.transCount.plus(BigInt.fromI32(1));
     marketSum.avgPrice = marketSum.totalAmount.div(marketSum.transCount);
   }else{
@@ -169,18 +170,40 @@ function calcTotalTicker(isAdd:boolean):void{
 function countNuscription24(ticker:string,inscription:Bytes,price:BigInt,time:BigInt,isCreateOrder:bool):void {
   let nuscription = Nuscription24.load(ticker);
   if(nuscription){
-    let current_time = Date.now()/1000;
+    // let date = new Date();
+    // let current_time = Date.now()/1000;
+    let manager_contract =   NipMarketManager.bind(Address.fromString("0xa3ef6Ef0B32cDA629CfAcd7359563F1b5d2eCfC8"))
+    let current_time = manager_contract.try_getBlockTime();
+   
+    if(current_time.reverted){
+      return;
+    }
+    log.warning("blocktime:{}",[current_time.value.toString()]);
     // let begin_time = nuscription.record_times[0];
-    if((current_time - time.toI32())<=60*60*24){
-    //   nuscription.prices.shift();
-    //   nuscription.record_times.shift();
-    // }else{
+    let internal_time = 60*60*24;
+    internal_time = 60*5;
+    if((current_time.value.toI32() - time.toI32())>internal_time){
+      let indicesToRemove: i32[] = [];
+      for (let i = 0; i < nuscription.record_times.length; i++) {
+          let tmp_time = nuscription.record_times[i];
+          if (current_time.value.toI32() - tmp_time.toI32() > internal_time) {
+              indicesToRemove.push(i);
+          }
+      }
+      
+      // Remove elements from nuscription.prices and nuscription.record_times
+      for (let i = indicesToRemove.length - 1; i >= 0; i--) {
+          let index = indicesToRemove[i];
+          nuscription.prices.splice(index, 1);
+          nuscription.record_times.splice(index, 1);
+      }
+    }else{
       if(isCreateOrder){
         nuscription.online_count = nuscription.online_count.plus( BigInt.fromI32(1));
       }else{
         nuscription.success_count = nuscription.success_count.plus( BigInt.fromI32(1));
         nuscription.prices.push(price);
-        // nuscription.record_times.push(time);
+        nuscription.record_times.push(time);
         let price_obj = calculateStatistics(nuscription.prices);
         nuscription.avg_price = price_obj.average;
         nuscription.max_price = price_obj.max;
@@ -199,7 +222,9 @@ function countNuscription24(ticker:string,inscription:Bytes,price:BigInt,time:Bi
       nuscription.total_amount = BigInt.fromI32(0);
       nuscription.max_price = BigInt.fromI32(0);
       nuscription.min_price = BigInt.fromI32(0);
-      nuscription.prices = [BigInt.fromI32(0)];
+      nuscription.avg_price = BigInt.zero();
+      nuscription.prices = [];
+      nuscription.record_times = [];
       nuscription.save()
     }
   }
@@ -210,18 +235,30 @@ class Statistics24{
   average:BigInt;
   max:BigInt;
   min:BigInt;
+  constructor(){
+    this.sum = BigInt.zero();
+     this.average = BigInt.zero();
+     this.max =  BigInt.zero();
+    this.min = BigInt.zero();
+  }
 }
 
 function calculateStatistics(arrs: BigInt[]): Statistics24{
-  let numbers:number[] = arrs.map<number>((i)=>i.toI32());
-  const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+  // let numbers:number[] = arrs.map<number>((i)=>i.toI32());
+  const sum = arrs.reduce((acc, curr) => acc + curr.toI32() , 0);
   const average = sum / arrs.length;
-  const max = Math.max(...numbers);
-  const min = Math.min(...numbers);
+  let i_max=0;
+  let i_min =0;
+  for (let i = 0; i < arrs.length; i++) {
+    let v = arrs[i];
+    i_max =Math.max(i_max as i32,v.toI32() ) as i32;
+    i_min = Math.min(i_min as i32,v.toI32()) as i32;
+  }
+
   let result = new Statistics24();
   result.sum = BigInt.fromI32(sum);
   result.average = BigInt.fromI32(average);
-  result.max = BigInt.fromI32(max);
-  result.min = BigInt.fromI32(min);
+  result.max = BigInt.fromI32(i_max);
+  result.min = BigInt.fromI32(i_min);
   return result;
 }

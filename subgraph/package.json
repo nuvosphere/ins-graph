@@ -14,6 +14,8 @@
     "create:andromeda": "graph create --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
     "remove:andromeda": "graph remove --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market",
     "deploy:andromeda": "graph deploy  --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market",
+    "remove:andromeda:test": "graph remove --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market-test",
+    "create:andromeda:test": "graph create --node https://metisapi.0xgraph.xyz/deploy nuscriptions/nip20-market-test",
     "deploy:andromeda:test": "graph deploy --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs nuscriptions/nip20-market-test"
   },
   "dependencies": {

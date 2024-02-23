@@ -35,6 +35,7 @@ type Nuscription24 @entity {
   avg_price:BigInt!
   total_amount:BigInt!
   prices:[BigInt!]!
+  record_times:[BigInt!]!
 }
 
 type UserConsumeSum @entity {
@@ -45,8 +46,7 @@ type UserConsumeSum @entity {
 
 type MarketSummary @entity {
   id: ID!
-  totalAmount: BigInt!
-  
+  totalAmount: String!
   transCount:BigInt!
   totalOrders:BigInt!
   avgPrice:BigInt!

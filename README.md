@@ -12,3 +12,7 @@ https://thegraph.com/docs/en/quick-start/
 - deploy your subgraph by `graph deploy --version-label v0.0.1 --network andromeda --node https://metisapi.0xgraph.xyz/deploy --ipfs https://metisapi.0xgraph.xyz/ipfs YOUR_USER_NAME/YOUR_SUBGRAPH_NAME`
 
 for more details, please read the [subgraph](./subgraph) workspace.
+
+yarn remove:andromeda:test;yarn create:andromeda:test;yarn deploy:andromeda:test
+
+yarn remove:andromeda;yarn create:andromeda;yarn deploy:andromeda
