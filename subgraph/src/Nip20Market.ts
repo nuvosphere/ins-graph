@@ -103,22 +103,32 @@ export function handleExecuteOrder(event: OrderExecuted): void {
 
   let marketSum = MarketSummary.load("nip20");
   if(marketSum){
-    marketSum.totalAmount = marketSum.totalAmount.plus(amount);//.times(multi_factor);
+    marketSum.sale_totalAmount = marketSum.sale_totalAmount.plus(amount);//.times(multi_factor);
     // marketSum.totalAmount = marketSum.totalAmount.times(multi_factor);
-    marketSum.transCount = marketSum.transCount.plus(BigInt.fromI32(1));
-    marketSum.avgPrice = marketSum.totalAmount.div(marketSum.transCount);
+    marketSum.sale_count = marketSum.sale_count.plus(BigInt.fromI32(1));
+    marketSum.sale_avgPrice = marketSum.sale_totalAmount.div(marketSum.sale_count);
   }else{
     marketSum = new MarketSummary("nip20");
-    marketSum.totalAmount =(amount);
-    marketSum.transCount = (BigInt.fromI32(1));
-    marketSum.avgPrice = marketSum.totalAmount.div(marketSum.transCount);
+    marketSum.sale_totalAmount =(amount);
+    marketSum.sale_count = (BigInt.fromI32(1));
+    marketSum.sale_avgPrice = marketSum.sale_totalAmount.div(marketSum.sale_count);
   }
   marketSum.save();
 
   //ticker
+  calcMarketSummary(order,false);
+  
+  countNuscription24(order.ticker,order.inscription,order.price,event.block.timestamp,false);
+
+  // log.warning("{},seller: {},{},{};buyer：{},{},{}", [amount.toString(),seller,sellerSum.income.toString(),sellerSum.expense.toString(),buyer,buyerSum.income.toString(),buyerSum.expense.toString()])
+
+}
+
+
+function calcMarketSummary(order:MarketOrder,isCreateOrder:boolean):void{
   let nuscription = Nuscription.load(order.ticker_name)
   if(nuscription){
-    nuscription.inscription = order.inscription;
+
     nuscription.online_count = nuscription.online_count.minus( BigInt.fromI32(1));
     nuscription.success_count = nuscription.success_count.plus( BigInt.fromI32(1));
     nuscription.total_amount = nuscription.total_amount.plus(order.price);
@@ -141,11 +151,6 @@ export function handleExecuteOrder(event: OrderExecuted): void {
     nuscription.min_price = order.price;
   }
   nuscription.save()
-  
-  countNuscription24(order.ticker,order.inscription,order.price,event.block.timestamp,false);
-
-  log.warning("{},seller: {},{},{};buyer：{},{},{}", [amount.toString(),seller,sellerSum.income.toString(),sellerSum.expense.toString(),buyer,buyerSum.income.toString(),buyerSum.expense.toString()])
-
 }
 
 function calcTotalTicker(isAdd:boolean):void{
@@ -153,15 +158,18 @@ function calcTotalTicker(isAdd:boolean):void{
   let marketSum = MarketSummary.load("nip20");
   if(marketSum ){
     let num = isAdd ? 1 : -1;
-    marketSum.totalOrders = marketSum.totalOrders.plus(BigInt.fromI32(num));
+    marketSum.total_orders = marketSum.total_orders.plus(BigInt.fromI32(num));
 
   }else{
     marketSum = new MarketSummary("nip20");
     let init_num = BigInt.fromI32(0);
-    marketSum.totalOrders = BigInt.fromI32(1);
-    marketSum.totalAmount = init_num;
-    marketSum.transCount = init_num;
-    marketSum.avgPrice = init_num;
+    marketSum.total_orders = BigInt.fromI32(1);
+    marketSum.sale_totalAmount = init_num;
+    marketSum.sale_count = init_num;
+    marketSum.sale_avgPrice = init_num;
+    marketSum.shelf_orderCount = init_num;
+    marketSum.shelf_totalAmount = init_num;
+    marketSum.shelf_avgPrice = init_num;
   }
   marketSum.save();
 
@@ -174,8 +182,10 @@ function countNuscription24(ticker:string,inscription:Bytes,price:BigInt,time:Bi
     // let current_time = Date.now()/1000;
     let manager_contract =   NipMarketManager.bind(Address.fromString("0xa3ef6Ef0B32cDA629CfAcd7359563F1b5d2eCfC8"))
     let current_time = manager_contract.try_getBlockTime();
-   
+    let version = manager_contract.version();
     if(current_time.reverted){
+      log.warning("blocktime:{},{}",['reverted',version]);
+
       return;
     }
     log.warning("blocktime:{}",[current_time.value.toString()]);

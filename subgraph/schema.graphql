@@ -46,9 +46,12 @@ type UserConsumeSum @entity {
 
 type MarketSummary @entity {
   id: ID!
-  totalAmount: String!
-  transCount:BigInt!
-  totalOrders:BigInt!
-  avgPrice:BigInt!
+  shelf_totalAmount: BigInt!
+  shelf_avgPrice:BigInt!
+  shelf_orderCount:BigInt!
+  sale_totalAmount:BigInt!
+  sale_count:BigInt!
+  total_orders:BigInt!
+  sale_avgPrice:BigInt!
 }
 

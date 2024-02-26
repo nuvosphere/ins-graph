@@ -626,8 +626,8 @@ export class MarketSummary extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get totalAmount(): BigInt {
-    let value = this.get("totalAmount");
+  get shelf_totalAmount(): BigInt {
+    let value = this.get("shelf_totalAmount");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
@@ -635,12 +635,12 @@ export class MarketSummary extends Entity {
     }
   }
 
-  set totalAmount(value: BigInt) {
-    this.set("totalAmount", Value.fromBigInt(value));
+  set shelf_totalAmount(value: BigInt) {
+    this.set("shelf_totalAmount", Value.fromBigInt(value));
   }
 
-  get transCount(): BigInt {
-    let value = this.get("transCount");
+  get shelf_avgPrice(): BigInt {
+    let value = this.get("shelf_avgPrice");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
@@ -648,12 +648,12 @@ export class MarketSummary extends Entity {
     }
   }
 
-  set transCount(value: BigInt) {
-    this.set("transCount", Value.fromBigInt(value));
+  set shelf_avgPrice(value: BigInt) {
+    this.set("shelf_avgPrice", Value.fromBigInt(value));
   }
 
-  get totalOrders(): BigInt {
-    let value = this.get("totalOrders");
+  get shelf_orderCount(): BigInt {
+    let value = this.get("shelf_orderCount");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
@@ -661,12 +661,12 @@ export class MarketSummary extends Entity {
     }
   }
 
-  set totalOrders(value: BigInt) {
-    this.set("totalOrders", Value.fromBigInt(value));
+  set shelf_orderCount(value: BigInt) {
+    this.set("shelf_orderCount", Value.fromBigInt(value));
   }
 
-  get avgPrice(): BigInt {
-    let value = this.get("avgPrice");
+  get sale_totalAmount(): BigInt {
+    let value = this.get("sale_totalAmount");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
@@ -674,7 +674,46 @@ export class MarketSummary extends Entity {
     }
   }
 
-  set avgPrice(value: BigInt) {
-    this.set("avgPrice", Value.fromBigInt(value));
+  set sale_totalAmount(value: BigInt) {
+    this.set("sale_totalAmount", Value.fromBigInt(value));
+  }
+
+  get sale_count(): BigInt {
+    let value = this.get("sale_count");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set sale_count(value: BigInt) {
+    this.set("sale_count", Value.fromBigInt(value));
+  }
+
+  get total_orders(): BigInt {
+    let value = this.get("total_orders");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set total_orders(value: BigInt) {
+    this.set("total_orders", Value.fromBigInt(value));
+  }
+
+  get sale_avgPrice(): BigInt {
+    let value = this.get("sale_avgPrice");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set sale_avgPrice(value: BigInt) {
+    this.set("sale_avgPrice", Value.fromBigInt(value));
   }
 }
