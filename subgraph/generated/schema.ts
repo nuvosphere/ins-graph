@@ -356,6 +356,58 @@ export class Nuscription extends Entity {
   set total_amount(value: BigInt) {
     this.set("total_amount", Value.fromBigInt(value));
   }
+
+  get shelf_max_price(): BigInt {
+    let value = this.get("shelf_max_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set shelf_max_price(value: BigInt) {
+    this.set("shelf_max_price", Value.fromBigInt(value));
+  }
+
+  get shelf_min_price(): BigInt {
+    let value = this.get("shelf_min_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set shelf_min_price(value: BigInt) {
+    this.set("shelf_min_price", Value.fromBigInt(value));
+  }
+
+  get shelf_avg_price(): BigInt {
+    let value = this.get("shelf_avg_price");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set shelf_avg_price(value: BigInt) {
+    this.set("shelf_avg_price", Value.fromBigInt(value));
+  }
+
+  get shelf_total_amount(): BigInt {
+    let value = this.get("shelf_total_amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set shelf_total_amount(value: BigInt) {
+    this.set("shelf_total_amount", Value.fromBigInt(value));
+  }
 }
 
 export class Nuscription24 extends Entity {
@@ -652,8 +704,8 @@ export class MarketSummary extends Entity {
     this.set("shelf_avgPrice", Value.fromBigInt(value));
   }
 
-  get shelf_orderCount(): BigInt {
-    let value = this.get("shelf_orderCount");
+  get shelf_count(): BigInt {
+    let value = this.get("shelf_count");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
@@ -661,8 +713,8 @@ export class MarketSummary extends Entity {
     }
   }
 
-  set shelf_orderCount(value: BigInt) {
-    this.set("shelf_orderCount", Value.fromBigInt(value));
+  set shelf_count(value: BigInt) {
+    this.set("shelf_count", Value.fromBigInt(value));
   }
 
   get sale_totalAmount(): BigInt {

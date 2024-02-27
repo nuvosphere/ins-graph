@@ -23,6 +23,10 @@ type Nuscription @entity {
   min_price:BigInt!
   avg_price:BigInt!
   total_amount:BigInt!
+  shelf_max_price:BigInt!
+  shelf_min_price:BigInt!
+  shelf_avg_price:BigInt!
+  shelf_total_amount:BigInt!
 }
 
 type Nuscription24 @entity {
@@ -48,7 +52,7 @@ type MarketSummary @entity {
   id: ID!
   shelf_totalAmount: BigInt!
   shelf_avgPrice:BigInt!
-  shelf_orderCount:BigInt!
+  shelf_count:BigInt!
   sale_totalAmount:BigInt!
   sale_count:BigInt!
   total_orders:BigInt!
