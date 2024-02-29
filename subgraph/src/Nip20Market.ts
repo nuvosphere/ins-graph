@@ -101,11 +101,20 @@ export function handleExecuteOrder(event: OrderExecuted): void {
       marketSum.sale_avgPrice = marketSum.sale_totalAmount.div(marketSum.sale_count);
     else
       marketSum.sale_avgPrice = BigInt.fromI32(0);
+
+    marketSum.shelf_count = marketSum.shelf_count.minus(BigInt.fromI32(1));
+    marketSum.shelf_totalAmount = marketSum.shelf_totalAmount.minus(order.price);
+    if(marketSum.shelf_totalAmount.gt(BigInt.zero())  && marketSum.shelf_count.gt(BigInt.zero()))
+      marketSum.shelf_avgPrice = marketSum.shelf_totalAmount.div(marketSum.shelf_count);
+    else
+      marketSum.shelf_avgPrice = BigInt.zero();
+
   }else{
     marketSum = new MarketSummary("nip20");
     marketSum.sale_totalAmount =(amount);
     marketSum.sale_count = (BigInt.fromI32(1));
-    if(marketSum.sale_totalAmount.gt(BigInt.zero()))
+
+    if(marketSum.sale_totalAmount.gt(BigInt.zero())  && marketSum.shelf_count.gt(BigInt.zero()))
       marketSum.sale_avgPrice = marketSum.sale_totalAmount.div(marketSum.sale_count);
     else
       marketSum.sale_avgPrice = BigInt.zero();
@@ -132,7 +141,7 @@ function calcMarketSummary(order:MarketOrder,isCreateOrder:boolean):void{
       nuscription.shelf_total_amount = nuscription.shelf_total_amount.plus(order.price);
       
       // nuscription.shelf_avg_price = nuscription.shelf_max_price = nuscription.shelf_min_price = init_num;
-      
+
       if(nuscription.shelf_total_amount.gt(BigInt.zero()))
         nuscription.shelf_avg_price = nuscription.shelf_total_amount.div(nuscription.online_count);
 
@@ -156,6 +165,19 @@ function calcMarketSummary(order:MarketOrder,isCreateOrder:boolean):void{
       if(order.price.lt( nuscription.min_price)|| nuscription.min_price==BigInt.zero()){
         nuscription.min_price = order.price;
       }
+
+      // //shelf
+      // if(nuscription.shelf_total_amount.gt(BigInt.zero())){
+      //   nuscription.shelf_total_amount = nuscription.shelf_total_amount.minus(order.price);
+      //   nuscription.shelf_avg_price = nuscription.shelf_total_amount.div(nuscription.online_count);
+      // }
+
+      // if(order.price.gt(nuscription.shelf_max_price) || nuscription.shelf_max_price == BigInt.zero()){
+      //   nuscription.shelf_max_price = order.price;
+      // }
+      // if(order.price.lt( nuscription.shelf_min_price) || nuscription.shelf_min_price==BigInt.zero()){
+      //   nuscription.shelf_min_price = order.price;
+      // }
     }
    
   }
@@ -198,7 +220,10 @@ function calcTotalTicker(isAdd:boolean,order:MarketOrder):void{
         marketSum.total_orders = marketSum.total_orders.plus(BigInt.fromI32(num));
         marketSum.shelf_count = marketSum.shelf_count.plus(BigInt.fromI32(num));
         marketSum.shelf_totalAmount = marketSum.shelf_totalAmount.plus(order.price);
-        marketSum.shelf_avgPrice = marketSum.shelf_totalAmount.div(marketSum.shelf_count);
+        if(marketSum.shelf_totalAmount.gt(BigInt.zero())  && marketSum.shelf_count.gt(BigInt.zero()))
+          marketSum.shelf_avgPrice = marketSum.shelf_totalAmount.div(marketSum.shelf_count);
+        else
+          marketSum.shelf_avgPrice = BigInt.zero();
   }else{
     marketSum = new MarketSummary("nip20");
     let init_num = BigInt.fromI32(0);
@@ -212,7 +237,10 @@ function calcTotalTicker(isAdd:boolean,order:MarketOrder):void{
     if(isAdd){
         marketSum.shelf_count = marketSum.shelf_count.plus(BigInt.fromI32(1));
         marketSum.shelf_totalAmount = marketSum.shelf_totalAmount.plus(order.price);
-        marketSum.shelf_avgPrice = marketSum.shelf_totalAmount.div(marketSum.shelf_count);
+        if(marketSum.shelf_totalAmount.gt(BigInt.zero()) && marketSum.shelf_count.gt(BigInt.zero()))
+          marketSum.shelf_avgPrice = marketSum.shelf_totalAmount.div(marketSum.shelf_count);
+        else
+          marketSum.shelf_avgPrice = BigInt.zero();
     }
   }
   
